@@ -3,13 +3,12 @@ const knex = require("../db/connection.js");
 
 async function movieExists(req, res, next) {
   const movie = await moviesService.read(req.params.movieId);
-  if(movie) {
+  if (movie) {
     res.locals.movie = movie;
     return next();
   }
-  next({ status: 404, message: "Movie cannot be found."})
+  next({ status: 404, message: "Movie cannot be found." });
 }
-
 
 async function list(req, res) {
   const { is_showing } = req.query;
@@ -23,10 +22,9 @@ async function list(req, res) {
   }
 }
 
-
 function read(req, res, next) {
   const { movie: data } = res.locals;
-  res.json({ data })
+  res.json({ data });
 }
 
 function listTheaters(req, res) {
@@ -41,7 +39,9 @@ function listTheaters(req, res) {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).json({ error: "An error occurred while fetching theaters." });
+      res
+        .status(500)
+        .json({ error: "An error occurred while fetching theaters." });
     });
 }
 
@@ -65,18 +65,15 @@ function listMovieReviews(req, res) {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).json({ error: "An error occurred while fetching movie reviews." });
+      res
+        .status(500)
+        .json({ error: "An error occurred while fetching movie reviews." });
     });
 }
-
-
-
-
-
 
 module.exports = {
   list,
   read: [movieExists, read],
   listTheaters,
   listMovieReviews,
-}
+};
