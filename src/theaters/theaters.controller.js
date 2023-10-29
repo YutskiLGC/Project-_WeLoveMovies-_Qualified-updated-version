@@ -1,18 +1,9 @@
 const reduceProperties = require("../utils/reduce-properties");
 const theatersService = require("./theaters.service");
 const moviesService = require("../movies/movies.service");
-const mapProperties = require("../utils/map-properties");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-const addMovie = mapProperties({
-  movie_id: "movie.movie_id",
-  title: "movie.title",
-  runtime_in_minutes: "movie.runtime_in_minutes",
-  rating: "movie.rating",
-  description: "movie.description",
-  image_url: "movie.image_url",
-});
-
-const reduceTheaterAndMovies = reduceProperties("theater_id", {
+const combineTheaterWithMovies = reduceProperties("theater_id", {
   movie_id: ["movies", null, "movie_id"],
   title: ["movies", null, "title"],
   rating: ["movies", null, "rating"],
@@ -26,7 +17,7 @@ async function getAllTheaters(req, res, next) {
   const theaters = await theatersService.getAllTheatersAndMovies();
   const movies = await moviesService.list();
 
-  const data = reduceTheaterAndMovies(theaters, movies);
+  const data = combineTheaterWithMovies(theaters, movies);
   console.log(data);
   res.json({ data });
 }
@@ -37,6 +28,6 @@ async function list(req, res) {
 }
 
 module.exports = {
-  list,
-  getAllTheaters,
+  list: [asyncErrorBoundary(list)],
+  getAllTheaters: [asyncErrorBoundary(getAllTheaters)],
 };
