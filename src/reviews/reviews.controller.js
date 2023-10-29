@@ -59,8 +59,12 @@ async function read(req, res) {
 }
 
 module.exports = {
-  create: [hasValidProperties, asyncErrorBoundary(create)],
-  read: [reviewExists, read],
-  update: [hasValidProperties, reviewExists, update],
-  delete: [reviewExists, destroy],
+  create: [asyncErrorBoundary(hasValidProperties), asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)],
+  update: [
+    asyncErrorBoundary(hasValidProperties),
+    asyncErrorBoundary(reviewExists),
+    asyncErrorBoundary(update),
+  ],
+  delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
 };
