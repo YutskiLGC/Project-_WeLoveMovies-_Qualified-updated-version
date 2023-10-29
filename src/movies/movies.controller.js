@@ -14,7 +14,7 @@ async function list(req, res) {
   const { is_showing } = req.query;
 
   if (is_showing === "true") {
-    const movies = await moviesService.listShowingMovies();
+    const movies = await moviesService.listMoviesShowing();
     res.json({ data: movies });
   } else {
     const movies = await moviesService.list();
