@@ -1,6 +1,6 @@
 const moviesService = require("./movies.service");
 const knex = require("../db/connection.js");
-const asyncErrorBoundary = require("../errors/asyncErrorBoundry");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 // middleware 
 async function movieExists(req, res, next) {

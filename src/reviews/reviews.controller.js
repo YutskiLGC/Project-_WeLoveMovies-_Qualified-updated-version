@@ -1,8 +1,8 @@
 const reviewsService = require("./reviews.service");
-
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const VALID_PROPERTIES = ["content", "score"];
 
-function hasOnlyValidProperties(req, res, next) {
+function hasValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter(
@@ -59,8 +59,8 @@ async function read(req, res) {
 }
 
 module.exports = {
-  create,
+  create: [hasValidProperties, asyncErrorBoundary(create)],
   read: [reviewExists, read],
-  update: [hasOnlyValidProperties, reviewExists, update],
+  update: [hasValidProperties, reviewExists, update],
   delete: [reviewExists, destroy],
 };
