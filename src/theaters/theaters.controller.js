@@ -23,7 +23,7 @@ const reduceTheaterAndMovies = reduceProperties("theater_id", {
 });
 
 async function getAllTheaters(req, res, next) {
-  const theaters = await theatersService.getAllTheatersWithMovies(); // Get all theaters
+  const theaters = await theatersService.getAllTheatersAndMovies();
   const movies = await moviesService.list();
 
   const data = reduceTheaterAndMovies(theaters, movies);

@@ -1,6 +1,6 @@
 const knex = require("../db/connection");
 
-function getAllTheatersWithMovies() {
+function getAllTheatersAndMovies() {
   return knex("theaters as t")
     .leftJoin("movies_theaters as mt", "t.theater_id", "mt.theater_id")
     .leftJoin("movies as m", "mt.movie_id", "m.movie_id")
@@ -15,5 +15,5 @@ function list() {
 
 module.exports = {
   list,
-  getAllTheatersWithMovies,
+  getAllTheatersAndMovies,
 };

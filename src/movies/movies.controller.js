@@ -1,6 +1,8 @@
 const moviesService = require("./movies.service");
 const knex = require("../db/connection.js");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundry");
 
+// middleware 
 async function movieExists(req, res, next) {
   const movie = await moviesService.read(req.params.movieId);
   if (movie) {
@@ -45,7 +47,7 @@ function listTheaters(req, res) {
     });
 }
 
-function listMovieReviews(req, res) {
+function listReviews(req, res) {
   const { movieId } = req.params;
 
   knex("reviews as r")
@@ -72,8 +74,8 @@ function listMovieReviews(req, res) {
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
   read: [movieExists, read],
   listTheaters,
-  listMovieReviews,
+  listReviews,
 };
