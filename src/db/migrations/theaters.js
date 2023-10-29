@@ -1,5 +1,4 @@
-
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTable("theaters", (table) => {
     table.increments("theater_id").primary().unsigned();
     table.string("name");
@@ -9,9 +8,9 @@ exports.up = function(knex) {
     table.string("state");
     table.string("zip");
     table.timestamp(true, true);
-  })
+  });
 };
 
-exports.down = function(knex) {
-  return knex.schema.dropTable("theaters")
+exports.down = function (knex) {
+  return knex.schema.dropTable("theaters");
 };

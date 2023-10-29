@@ -1,4 +1,4 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTable("movies", (table) => {
     table.increments("movie_id").primary();
     table.string("title").notNullable();
@@ -10,6 +10,6 @@ exports.up = function(knex) {
   });
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTable("movies");
 };
