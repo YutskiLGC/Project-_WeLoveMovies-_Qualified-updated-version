@@ -32,9 +32,6 @@ async function reviewExists(req, res, next) {
 }
 
 async function update(req, res) {
-  const { reviewId } = req.params;
-  const { content, score } = req.body;
-
   const updatedReview = {
     ...res.locals.review,
     ...req.body.data,
