@@ -1,13 +1,18 @@
 exports.up = function (knex) {
   return knex.schema.createTable("movies_theaters", (table) => {
-    table.integer("movie_id").unsigned();
-    table.integer("theater_id").unsigned();
+    table.integer("movie_id").unsigned().notNullable();
+    table.integer("theater_id").unsigned().notNullable();
     table.boolean("is_showing").defaultTo(false);
 
-    table.foreign("movie_id").references("movies.movie_id");
-    table.foreign("theater_id").references("theaters.theater_id");
+    table.foreign("movie_id").references("movies.movie_id").onDelete("CASCADE");
+
+    table
+      .foreign("theater_id")
+      .references("theaters.theater_id")
+      .onDelete("CASCADE");
 
     // why isn't it showing up in Dbeaver when migrating latest
+    // table.increments( "theater_id" );
     table.primary(["movie_id", "theater_id"]);
   });
 };
