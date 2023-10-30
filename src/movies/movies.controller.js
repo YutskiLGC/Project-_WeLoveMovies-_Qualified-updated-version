@@ -12,23 +12,12 @@ async function movieExists(req, res, next) {
   next({ status: 404, message: "Movie cannot be found." });
 }
 
-/*
 async function list(req, res) {
   const { is_showing } = req.query;
-
-  if (is_showing === "true") {
-    const movies = await moviesService.listMoviesShowing();
-    res.json({ data: movies });
-  } else {
-    const movies = await moviesService.list();
-    res.json({ data: movies });
-  }
-}
-*/
-
-async function list(req, res) {
-  const { is_showing } = req.query;
-  const movies = is_showing === "true" ? await moviesService.listMoviesShowing() : await moviesService.list();
+  const movies =
+    is_showing === "true"
+      ? await moviesService.listMoviesShowing()
+      : await moviesService.list();
   res.json({ data: movies });
 }
 
