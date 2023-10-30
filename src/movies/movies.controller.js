@@ -2,7 +2,7 @@ const moviesService = require("./movies.service");
 const knex = require("../db/connection.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-// middleware 
+// middleware
 async function movieExists(req, res, next) {
   const movie = await moviesService.read(req.params.movieId);
   if (movie) {
@@ -12,6 +12,7 @@ async function movieExists(req, res, next) {
   next({ status: 404, message: "Movie cannot be found." });
 }
 
+/*
 async function list(req, res) {
   const { is_showing } = req.query;
 
@@ -22,6 +23,13 @@ async function list(req, res) {
     const movies = await moviesService.list();
     res.json({ data: movies });
   }
+}
+*/
+
+async function list(req, res) {
+  const { is_showing } = req.query;
+  const movies = is_showing === "true" ? await moviesService.listMoviesShowing() : await moviesService.list();
+  res.json({ data: movies });
 }
 
 function read(req, res, next) {
