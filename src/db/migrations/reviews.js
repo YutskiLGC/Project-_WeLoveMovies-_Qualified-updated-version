@@ -6,9 +6,6 @@ exports.up = function (knex) {
     table.integer("critic_id").unsigned().notNullable();
     table.integer("movie_id").unsigned().notNullable();
 
-    // table.timestamp("created_at").defaultTo(knex.fn.now());
-    // table.timestamp("updated_at").defaultTo(knex.fn.now());
-
     table.foreign("movie_id").references("movies.movie_id").onDelete("CASCADE");
 
     table

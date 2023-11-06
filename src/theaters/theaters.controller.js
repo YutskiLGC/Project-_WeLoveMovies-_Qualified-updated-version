@@ -3,6 +3,7 @@ const theatersService = require("./theaters.service");
 const moviesService = require("../movies/movies.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
+// Definition of the combineTheaterWithMovies function
 const combineTheaterWithMovies = reduceProperties("theater_id", {
   movie_id: ["movies", null, "movie_id"],
   title: ["movies", null, "title"],
@@ -13,9 +14,12 @@ const combineTheaterWithMovies = reduceProperties("theater_id", {
   is_showing: ["movies", null, "is_showing"],
 });
 
+// Middleware and request handlers
 async function getAllTheaters(req, res, next) {
-  const theaters = await theatersService.getAllTheatersAndMovies();
-  const movies = await moviesService.list();
+  const [theaters, movies] = await Promise.all([
+    theatersService.getAllTheatersAndMovies(),
+    moviesService.list(),
+  ]);
 
   const data = combineTheaterWithMovies(theaters, movies);
   console.log(data);

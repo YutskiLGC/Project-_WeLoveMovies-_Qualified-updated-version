@@ -13,17 +13,12 @@ app.use("/movies", moviesRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/theaters", theatersRouter);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
 // Error - not found handler
 app.use((req, res, next) => {
   next({ status: 404, message: `Not found: ${req.originalUrl}` });
 });
 
-// Error handler 
+// Error handler
 app.use((error, req, res, next) => {
   console.error(error);
   const { status = 500, message = "Something went wrong!" } = error;

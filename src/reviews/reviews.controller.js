@@ -1,7 +1,11 @@
 const reviewsService = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const knex = require("../db/connection");
+
+// Constants
 const VALID_PROPERTIES = ["content", "score"];
 
+// Middlewares and validation functions
 function hasValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
@@ -15,6 +19,11 @@ function hasValidProperties(req, res, next) {
     });
   }
   next();
+}
+
+// Database operations functions
+async function list() {
+  return knex("theaters").select("*");
 }
 
 async function create(req, res, next) {
@@ -31,7 +40,7 @@ async function reviewExists(req, res, next) {
   next({ status: 404, message: "Review cannot be found." });
 }
 
-async function update(req, res) {
+async function update(req, res, next) {
   const updatedReview = {
     ...res.locals.review,
     ...req.body.data,
@@ -52,10 +61,11 @@ async function destroy(req, res) {
 }
 
 async function read(req, res) {
-  res.json({ data: res.locals.review });
+  res.status(200).json({ data: res.locals.review });
 }
 
 module.exports = {
+  list: [asyncErrorBoundary(list)],
   create: [asyncErrorBoundary(hasValidProperties), asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)],
   update: [

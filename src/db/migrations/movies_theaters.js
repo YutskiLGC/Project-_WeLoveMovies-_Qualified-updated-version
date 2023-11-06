@@ -11,8 +11,6 @@ exports.up = function (knex) {
       .references("theaters.theater_id")
       .onDelete("CASCADE");
 
-    // why isn't it showing up in Dbeaver when migrating latest
-    // table.increments( "theater_id" );
     table.primary(["movie_id", "theater_id"]);
   });
 };
